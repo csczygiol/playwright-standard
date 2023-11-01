@@ -1,3 +1,4 @@
+require('dotenv').config();
 // @ts-check
 import { expect, test } from '@playwright/test';
 
@@ -7,7 +8,11 @@ test('Login', async ({ page }) => {
     // Expect a title "to contain" a substring.
     await expect(page).toHaveTitle(/Practice Test Automation/);
 
-    await page.getByRole('textbox', { name: 'Username' }).fill('student')
-    await page.getByRole('textbox', { name: 'Password' }).fill('Password123')
-    await page.getByRole('button', { name: 'Submit' }).click()
+    const username = process.env.T_USERNAME || '';
+    const password = process.env.T_PASSWORD || '';
+
+    // Use 'page.locator' to select elements by label (assuming 'label' is a valid selector on the page).
+    await page.locator('label:has-text("Username") + input').fill(username);
+    await page.locator('label:has-text("Password") + input').fill(password);
+    await page.locator('button:has-text("Submit")').click();
 });
